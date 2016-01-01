@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+      <title>Communiclic !</title>
+
+      <!-- Bootstrap -->
+      <link href="css/bootstrap.min.css" rel="stylesheet">
+      <style type="text/css">
+            body, html
+            {
+                margin: 0; padding: 0; height: 100%; overflow: hidden;
+            }
+
+            #content
+            {
+                position:absolute; left: 0; right: 0; bottom: 0; top: 0px;
+            }
+        </style>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <script>
+        var getUrlParameter = function getUrlParameter(sParam) {
+            var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+                sURLVariables = sPageURL.split('&'),
+                sParameterName,
+                i;
+
+            for (i = 0; i < sURLVariables.length; i++) {
+                sParameterName = sURLVariables[i].split('=');
+
+                if (sParameterName[0] === sParam) {
+                    return sParameterName[1] === undefined ? true : sParameterName[1];
+                }
+            }
+        };
+        function loadIframe(iframeName, url) {
+             var $iframe = $('#' + iframeName);
+             if ( $iframe.length ) {
+                 $iframe.attr('src',url);
+                 return false;
+             }
+             return true;
+         }
+         function setCookie(cname,cvalue,exdays) {
+             var d = new Date();
+             d.setTime(d.getTime() + (exdays*24*60*60*1000));
+             var expires = "expires=" + d.toGMTString();
+             document.cookie = cname+"="+cvalue+"; "+expires;
+         }
+
+         function getCookie(cname) {
+             var name = cname + "=";
+             var ca = document.cookie.split(';');
+             for(var i=0; i<ca.length; i++) {
+                 var c = ca[i];
+                 while (c.charAt(0)==' ') c = c.substring(1);
+                 if (c.indexOf(name) == 0) {
+                     return c.substring(name.length, c.length);
+                 }
+             }
+             return "";
+         }
+
+         function IncrementClics() {
+             var nbclics=getCookie("commuclic_nbclic");
+             if (nbclics != "") {
+                 NewNbClics = parseInt(nbclics) + 1;
+                 setCookie("commuclic_nbclic", NewNbClics, 30);
+                 DisplayClicOK("Nombre de clics: " + NewNbClics)
+             } else {
+                 setCookie("commuclic_nbclic", 1, 30);
+            }
+        }
+        function Countdown(options) {
+            var timer,
+            instance = this,
+            seconds = options.seconds || 10,
+            updateStatus = options.onUpdateStatus || function () {},
+            counterEnd = options.onCounterEnd || function () {};
+
+            function decrementCounter() {
+              updateStatus(seconds);
+              if (seconds === 0) {
+                counterEnd();
+                instance.stop();
+              }
+              seconds--;
+            }
+
+            this.start = function () {
+              clearInterval(timer);
+              timer = 0;
+              seconds = options.seconds;
+              timer = setInterval(decrementCounter, 1000);
+            };
+
+            this.stop = function () {
+              clearInterval(timer);
+            };
+          }
+
+          function DisplayCountDown(sec)
+          {
+            $("#countdownspan").html(sec);
+          }
+          function DisplayClicOK(text)
+          {
+            $("#countdownspan").html(text);
+          }
+
+         $(document).ready(function() {
+           var targeturl = getUrlParameter('tagerturl');
+           loadIframe("frameContent", targeturl);
+           var myCounter = new Countdown({
+                seconds:10,  // number of seconds to count down
+                onUpdateStatus: function(sec){DisplayCountDown(sec);}, // callback for each second
+                onCounterEnd: function(){ IncrementClics();} // final action
+            });
+
+            myCounter.start();
+         });
+       </script>
+    </head>
+    <body>
+      <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="#">CommniClic</a>
+        <span class="navbar-brand" id="countdownspan"></span>
+      </div>
+    </div>
+  </nav>
+      <div id="content">
+        <iframe id="frameContent" width="100%" height="100%" frameborder="0" scrolling="yes" marginheight="0" marginwidth="0" src="#" />
+      </div>
+    </body>
+</html>
