@@ -1,11 +1,11 @@
 {
-  "name": "flux",
+  "name": "Link Sharing",
   "version": "0.0.1",
-  "description": "A simple TODOS app in React and Flux",
-  "author": "Ben Grunfeld",
-  "repository": "https://github.com/bengrunfeld/flux-react-todos",
-  "readme": "https://github.com/bengrunfeld/flux-react-todos/README.md",
-  "license": "Apache 2",
+  "description": "A simple app in React and Flux with to share links",
+  "author": "Gilles LARROZE",
+  "repository": "https://github.com/glarroze/communiclick",
+  "readme": "https://github.com/glarroze/communiclick/blob/master/README.md",
+  "license": "none",
   "devDependencies": {
     "gulp": "^3.8.11",
     "gulp-browserify": "^0.5.0",
